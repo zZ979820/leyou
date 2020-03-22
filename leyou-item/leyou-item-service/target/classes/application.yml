@@ -1,0 +1,21 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: item-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://www.loser985.com:3306/leyou?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: kepan825907568
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port} #向注册中心中注册服务id
+    lease-renewal-interval-in-seconds: 5 #向注册中心中注册服务id
+    lease-expiration-duration-in-seconds: 10 #续约到期的时间
+mybatis:
+  type-aliases-package: com.leyou.item.pojo

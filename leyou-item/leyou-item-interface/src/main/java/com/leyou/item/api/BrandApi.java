@@ -1,0 +1,18 @@
+package com.leyou.item.api;
+
+import com.leyou.item.pojo.Brand;
+import org.springframework.web.bind.annotation.*;
+
+
+@RequestMapping("brand")
+public interface BrandApi {
+
+    /**
+     * 根据id查询品牌
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public Brand queryBrandById(@PathVariable(value = "id")Long id);
+
+}

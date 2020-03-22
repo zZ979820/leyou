@@ -1,0 +1,47 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: leyou-gateway
+  cloud:
+    gateway:
+#      gateway中配置跨域方法
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allow-credentials: true
+#            allowed-origins: "http://manage.leyou.com"
+#            allowed-header: "*"
+#            allowed-methods: "*"
+#            max-age: 3600
+      routes:
+      - id: item-service
+        uri: lb://item-service
+        predicates:
+        - Path=/api/item/**
+        filters:
+        - RewritePath=/api/item/(?<segment>.*), /$\{segment}
+      - id: search-service
+        uri: lb://search-service
+        predicates:
+        - Path=/api/search/**
+        filters:
+        - RewritePath=/api/search/(?<segment>.*), /$\{segment}
+#      discovery:
+#        locator:
+#          lower-case-service-id: true #服务名称以小写呈现
+#          enabled: true #开启根据服务名称自动转发
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+  instance:
+    prefer-ip-address: true #使用ip地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port} #向注册中心中注册服务id
+    lease-renewal-interval-in-seconds: 5 #向注册中心中注册服务id
+    lease-expiration-duration-in-seconds: 10 #续约到期的时间
+logging:
+  level:
+    root: info
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
